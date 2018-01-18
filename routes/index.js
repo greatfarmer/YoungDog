@@ -1,6 +1,16 @@
 // routes/index.js
 
-module.exports = function(app, Movie) {
+//TODO 1.전체 결과 조회하기
+//     2.검색 결과 HTML로 출력하기
+
+module.exports = function(app, Movie, fs) {
+  // VIEW SETTING
+  app.get('/', function(req, res) {
+    res.render('index', {
+      title: "YoungDog"
+    });
+  });
+
   // GET ALL MOVIES
   app.get('/movies', function(req, res) {
     Movie.find(function(err, movies) {
@@ -55,8 +65,25 @@ module.exports = function(app, Movie) {
         res.json({result: 0});
         return;
       }
-      res.json({result: 1});
+      // res.json({result: 1}); // 정상일 때 메세지
+      res.write('Writer: ' + req.body.writer + '\n');
+      res.write('Date: ' + req.body.date + '\n');
+      res.write('Title: ' + req.body.title + '\n');
+      res.write('Director: ' + req.body.director + '\n');
+      res.write('Comments: ' + req.body.comments + '\n\n');
+      res.end("Done!");
     });
+
+    //res.send()는 res.end()를 부르기 때문에 여러줄 사용하지 못함
+    //res.write()를 쓰고 마지막에 res.end()를 해주면 됨.
+
+    //TODO 아래 한글출력 시 깨지는 것 해결하기
+    // res.write('작성자: ' + req.body.writer + '\n');
+    // res.write('감상일시: ' + req.body.date + '\n');
+    // res.write('제목: ' + req.body.title + '\n');
+    // res.write('감독: ' + req.body.director + '\n');
+    // res.write('감상평: ' + req.body.comments + '\n');
+    // res.end("정상적으로 입력되었습니다.");
   });
 
   // UPDATE MOVIE
