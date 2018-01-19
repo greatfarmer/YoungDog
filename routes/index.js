@@ -11,11 +11,21 @@ module.exports = function(app, Movie, fs) {
     });
   });
 
+  // GET SOME MOVIE TEST
+  app.get('/list/:title', function(req, res) {
+    Movie.findOne({title: req.params.title}, function(err, movies) {
+      if (err) return res.status(500).json({error: err});
+      if (!movies) return res.status(404).json({error: 'movie not found'});
+      res.render('movieList', {title: "List", content: movies});
+    });
+  });
+
   // GET ALL MOVIES
   app.get('/movies', function(req, res) {
     Movie.find(function(err, movies) {
       if (err) return res.status(500).send({error: 'database failure'});
-      res.json(movies);
+      // res.json(movies);
+      res.render('movieList', {title: "List", content: movies});
     });
   });
 
@@ -65,13 +75,7 @@ module.exports = function(app, Movie, fs) {
         res.json({result: 0});
         return;
       }
-      // res.json({result: 1}); // 정상일 때 메세지
-      res.write('Writer: ' + req.body.writer + '\n');
-      res.write('Date: ' + req.body.date + '\n');
-      res.write('Title: ' + req.body.title + '\n');
-      res.write('Director: ' + req.body.director + '\n');
-      res.write('Comments: ' + req.body.comments + '\n\n');
-      res.end("Done!");
+      res.json({result: 1}); // 정상일 때 메세지
     });
 
     //res.send()는 res.end()를 부르기 때문에 여러줄 사용하지 못함

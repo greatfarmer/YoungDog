@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title><%= title %></title>
+    <style>
+      table {
+        border-collapse: collapse;
+        width: 100%;
+      }
+      table, th, td {
+        border: 1px solid black;
+        text-align: center;
+      }
+      .comments {
+        text-align: justify;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>영화 감상 목록</h1>
+
+    <table>
+      <tr>
+        <th>No.</th>
+        <th>Writer</th>
+        <th>Date</th>
+        <th>Title</th>
+        <th>Director</th>
+        <th>comments</th>
+      </tr>
+    <% if (content.length > 0) { %>
+      <% var i = 0; %>
+      <% content.forEach(function(item) { %>
+        <% i++; %>
+          <tr>
+            <td><%= i %></td>
+            <td><%= item.writer %></td>
+            <td><%= item.date %></td>
+            <td><%= item.title %></td>
+            <td><%= item.director %></td>
+            <td class="comments"><%= item.comments %></td>
+          </tr>
+      <% }) %>
+    </table>
+    <% } else {%>
+      <p>게시물이 없습니다.</p>
+    <% } %>
+  </body>
+</html>
