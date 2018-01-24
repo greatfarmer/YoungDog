@@ -33,6 +33,40 @@
       </div>
     </form>
     <br>
+
+
+    <!-- TODO 드롭다운메뉴로 작성자, 제목, 감독으로 검색하는 기능 추가 -->
+    <!-- SEARCH MOVIES BY WRITER -->
+    <form action="/movies/writer" method="get">
+      <div>
+        <label for="writer">작성자 검색</label>
+        <input type="text" name="writer">
+        <input type="submit" value="확인">
+      </div>
+    </form>
+    <br>
+
+    <!-- SEARCH MOVIES BY TITLE -->
+    <form action="/movies/title" method="get">
+      <div>
+        <label for="title">제목 검색</label>
+        <input type="text" name="title">
+        <input type="submit" value="확인">
+      </div>
+    </form>
+    <br>
+
+    <!-- SEARCH MOVIES BY DIRECTOR -->
+    <form action="/movies/director" method="get">
+      <div>
+        <label for="director">감독 검색</label>
+        <input type="text" name="director">
+        <input type="submit" value="확인">
+      </div>
+    </form>
+    <br>
+
+    <!-- GET ALL MOVIES LIST -->
     <form action="/movies" method="get">
       <div>
         <input type="submit" value="리스트">

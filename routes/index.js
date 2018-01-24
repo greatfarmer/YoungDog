@@ -11,15 +11,6 @@ module.exports = function(app, Movie, fs) {
     });
   });
 
-  // GET SOME MOVIE TEST
-  app.get('/list/:title', function(req, res) {
-    Movie.findOne({title: req.params.title}, function(err, movies) {
-      if (err) return res.status(500).json({error: err});
-      if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.render('movieList', {title: "List", content: movies});
-    });
-  });
-
   // GET ALL MOVIES
   app.get('/movies', function(req, res) {
     Movie.find(function(err, movies) {
@@ -31,32 +22,30 @@ module.exports = function(app, Movie, fs) {
 
   // GET MOVIES BY TITLE
   // TODO: 1.title 중복 시 처리 방법 2.공란일 때 처리 방법
-  app.get('/movies/title/:title', function(req, res) {
-    Movie.findOne({title: req.params.title}, function(err, movies) {
+  // [!] findOne은 content.length가 생성되지 않는다. undefine으로 나온다.
+  app.get('/movies/title', function(req, res) {
+    Movie.find({title: req.query.title}, function(err, movies) {
       if (err) return res.status(500).json({error: err});
-      // if (movies.length === 0) return res.status(404).json({error: 'movie not found'});
       if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.json(movies);
+      res.render('movieList', {title: "List", content: movies});
     });
   });
 
   // GET MOVIES BY WRITER
-  app.get('/movies/writer/:writer', function(req, res) {
-    Movie.findOne({writer: req.params.writer}, function(err, movies) {
+  app.get('/movies/writer/', function(req, res) {
+    Movie.find({writer: req.query.writer}, function(err, movies) {
       if (err) return res.status(500).json({error: err});
-      // if (movies.length === 0) return res.status(404).json({error: 'movie not found'});
       if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.json(movies);
+      res.render('movieList', {title: "List", content: movies});
     });
   });
 
   // GET MOVIES BY DIRECTOR
-  app.get('/movies/director/:director', function(req, res) {
-    Movie.findOne({director: req.params.director}, function(err, movies) {
+  app.get('/movies/director/', function(req, res) {
+    Movie.find({director: req.query.director}, function(err, movies) {
       if (err) return res.status(500).json({error: err});
-      // if (movies.length === 0) return res.status(404).json({error: 'movie not found'});
       if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.json(movies);
+      res.render('movieList', {title: "List", content: movies});
     });
   });
 
@@ -75,7 +64,12 @@ module.exports = function(app, Movie, fs) {
         res.json({result: 0});
         return;
       }
-      res.json({result: 1}); // 정상일 때 메세지
+      //res.json({result: "정상적으로 등록되었습니다."});
+      // TODO res.json과 res.write의 차이 공부
+
+      // TODO 메시지와 함께 redirection 하는 법 공부
+      // res.flash("3초후에 메인홈페이지로 갑니다.")
+      // setTimeout(function() { res.redirect('/'); }, 3000);
     });
 
     //res.send()는 res.end()를 부르기 때문에 여러줄 사용하지 못함
@@ -92,7 +86,7 @@ module.exports = function(app, Movie, fs) {
 
   // UPDATE MOVIE
   app.put('/movies/title/:title', function(req, res) {
-    Movie.findOne({title: req.params.title}, function(err, movie) {
+    Movie.find({title: req.params.title}, function(err, movie) {
       if (err) return res.status(500).json({error: 'database failure'});
       if (!movie) return res.status(404).json({error: 'movie not found'});
 

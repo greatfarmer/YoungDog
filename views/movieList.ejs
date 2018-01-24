@@ -19,18 +19,17 @@
   </head>
   <body>
     <h1>영화 감상 목록</h1>
-
-    <table>
-      <tr>
-        <th>No.</th>
-        <th>Writer</th>
-        <th>Date</th>
-        <th>Title</th>
-        <th>Director</th>
-        <th>comments</th>
-      </tr>
-    <% if (content.length > 0) { %>
-      <% var i = 0; %>
+      <% if(content.length > 0) { %>
+        <table>
+          <tr>
+            <th>No.</th>
+            <th>Writer</th>
+            <th>Date</th>
+            <th>Title</th>
+            <th>Director</th>
+            <th>comments</th>
+          </tr>
+        <% var i = 0; %>
       <% content.forEach(function(item) { %>
         <% i++; %>
           <tr>
@@ -42,7 +41,7 @@
             <td class="comments"><%= item.comments %></td>
           </tr>
       <% }) %>
-    </table>
+        </table>
     <% } else {%>
       <p>게시물이 없습니다.</p>
     <% } %>
