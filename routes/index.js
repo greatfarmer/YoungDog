@@ -1,7 +1,7 @@
 // routes/index.js
 
-//TODO 1.전체 결과 조회하기
-//     2.검색 결과 HTML로 출력하기
+//TODO 1.전체 결과 조회하기 [done!]
+//     2.검색 결과 HTML로 출력하기 [done!]
 
 module.exports = function(app, Movie, fs) {
   // VIEW SETTING
@@ -20,34 +20,34 @@ module.exports = function(app, Movie, fs) {
     });
   });
 
-  // GET MOVIES BY TITLE
+  // SEARCH MOVIES
+  // TODO 코드 간소화 방법
   // TODO: 1.title 중복 시 처리 방법 2.공란일 때 처리 방법
+  app.get('/movies/search', function(req, res) {
+    if (req.query.type == "writer") {
+      Movie.find({writer: req.query.search}, function(err, movies) {
+        if (err) return res.status(500).json({error: err});
+        if (!movies) return res.status(404).json({error: 'movie not found'});
+        res.render('movieList', {title: "List", content: movies});
+      });
+    };
+    if (req.query.type == "title") {
+      Movie.find({title: req.query.search}, function(err, movies) {
+        if (err) return res.status(500).json({error: err});
+        if (!movies) return res.status(404).json({error: 'movie not found'});
+        res.render('movieList', {title: "List", content: movies});
+      });
+    };
+    if (req.query.type == "director") {
+      Movie.find({director: req.query.search}, function(err, movies) {
+        if (err) return res.status(500).json({error: err});
+        if (!movies) return res.status(404).json({error: 'movie not found'});
+        res.render('movieList', {title: "List", content: movies});
+      });
+    };
+  });
+
   // [!] findOne은 content.length가 생성되지 않는다. undefine으로 나온다.
-  app.get('/movies/title', function(req, res) {
-    Movie.find({title: req.query.title}, function(err, movies) {
-      if (err) return res.status(500).json({error: err});
-      if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.render('movieList', {title: "List", content: movies});
-    });
-  });
-
-  // GET MOVIES BY WRITER
-  app.get('/movies/writer/', function(req, res) {
-    Movie.find({writer: req.query.writer}, function(err, movies) {
-      if (err) return res.status(500).json({error: err});
-      if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.render('movieList', {title: "List", content: movies});
-    });
-  });
-
-  // GET MOVIES BY DIRECTOR
-  app.get('/movies/director/', function(req, res) {
-    Movie.find({director: req.query.director}, function(err, movies) {
-      if (err) return res.status(500).json({error: err});
-      if (!movies) return res.status(404).json({error: 'movie not found'});
-      res.render('movieList', {title: "List", content: movies});
-    });
-  });
 
   // CREATE MOVIE
   app.post('/movies', function(req, res) {
